@@ -1,7 +1,6 @@
 require('dotenv').config();
 const axios = require("axios");
 
-
 async function getPrice(pair) {
   var res = null;
     try {
