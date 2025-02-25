@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insurance Claim AI Processor</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            background-color: #f7f9fc;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            margin-top: 0;
+        }
+        h2 {
+            color: #3498db;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        input[type="file"] {
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .options {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+        .checkbox-group {
+            margin: 10px 0;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+        .result-section {
+            margin-top: 30px;
+            display: none;
+        }
+        .card {
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 16px;
+            background-color: white;
+        }
+        .card-header {
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: #2c3e50;
+        }
+        .status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .status-eligible {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-warning {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .status-review {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .status-denied {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .issue-list {
+            margin-top: 12px;
+            padding-left: 20px;
+        }
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: #3498db;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+        .processing {
+            display: none;
+            margin: 20px 0;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .node-info {
+            background-color: #e8f4fc;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .node-id {
+            font-family: monospace;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Insurance Claim AI Processor</h1>
+        
+        <div class="node-info">
+            Connected to GaiaNet Node: <span class="node-id">0x8600b7fb770322a38c1ba3e8fcab1f73c6cc701b</span>
+            <button id="testConnection" style="float:right; padding: 4px 8px; font-size: 14px;">Test Connection</button>
+        </div>
+        
+        <div id="connectionResult"></div>
+        
+        <h2>Upload Claim</h2>
+        <form id="claimForm">
+            <label for="pdfFile">Select Insurance Claim PDF:</label>
+            <input type="file" id="pdfFile" accept=".pdf" required>
+            
+            <div class="options">
+                <h3>Processing Options</h3>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="generateProof" name="generateProof">
+                    <label for="generateProof" style="display: inline;">Generate Zero-Knowledge Proof</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="sendToAggregators" name="sendToAggregators">
+                    <label for="sendToAggregators" style="display: inline;">Send Proof to Othentic Aggregators</label>
+                </div>
+            </div>
+            
+            <button type="submit">Process Claim</button>
+        </form>
+        
+        <div id="processing" class="processing">
+            <div class="spinner"></div> Processing claim, please wait...
+        </div>
+        
+        <div id="results" class="result-section">
+            <h2>Processing Results</h2>
+            
+            <div class="card">
+                <div class="card-header">Claim Data</div>
+                <pre id="claimData"></pre>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">Validation Results</div>
+                <div id="validationStatus"></div>
+                <div id="validationIssues"></div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">AI Analysis</div>
+                <div id="aiAnalysis"></div>
+            </div>
+            
+            <div id="proofCard" class="card" style="display: none;">
+                <div class="card-header">Zero-Knowledge Proof</div>
+                <pre id="zkProof"></pre>
+            </div>
+            
+            <div id="aggregatorCard" class="card" style="display: none;">
+                <div class="card-header">Aggregator Response</div>
+                <pre id="aggregatorResponse"></pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const nodeId = '0x8600b7fb770322a38c1ba3e8fcab1f73c6cc701b';
+            const apiUrl = 'http://localhost:8000'; // Change this to your actual API URL
+            
+            // Test GaiaNet node connection
+            document.getElementById('testConnection').addEventListener('click', function() {
+                const connectionResult = document.getElementById('connectionResult');
+                connectionResult.innerHTML = '<div class="processing" style="display:block"><div class="spinner"></div> Testing connection to GaiaNet node...</div>';
+                
+                fetch(`${apiUrl}/test-gaia-connection`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            connectionResult.innerHTML = `
+                                <div style="background-color: #d4edda; color: #155724; padding: 10px; border-radius: 4px; margin: 10px 0;">
+                                    ✅ Successfully connected to GaiaNet node!<br>
+                                    Node response: ${data.response}
+                                </div>`;
+                        } else {
+                            connectionResult.innerHTML = `
+                                <div style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 4px; margin: 10px 0;">
+                                    ❌ Failed to connect to GaiaNet node.<br>
+                                    Error: ${data.details}
+                                </div>`;
+                        }
+                    })
+                    .catch(error => {
+                        connectionResult.innerHTML = `
+                            <div style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 4px; margin: 10px 0;">
+                                ❌ Error connecting to API: ${error.message}<br>
+                                Make sure the server is running at ${apiUrl}
+                            </div>`;
+                    });
+            });
+            
+            // Handle form submission
+            document.getElementById('claimForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const fileInput = document.getElementById('pdfFile');
+                const generateProof = document.getElementById('generateProof').checked;
+                const sendToAggregators = document.getElementById('sendToAggregators').checked;
+                
+                if (!fileInput.files[0]) {
+                    alert('Please select a PDF file');
+                    return;
+                }
+                
+                // Show processing indicator
+                document.getElementById('processing').style.display = 'block';
+                document.getElementById('results').style.display = 'none';
+                
+                const formData = new FormData();
+                formData.append('pdf_file', fileInput.files[0]);
+                formData.append('generate_proof', generateProof);
+                formData.append('send_to_aggregators', sendToAggregators);
+                
+                fetch(`${apiUrl}/process-claim/`, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Hide processing indicator
+                    document.getElementById('processing').style.display = 'none';
+                    document.getElementById('results').style.display = 'block';
+                    
+                    // Display claim data
+                    document.getElementById('claimData').textContent = JSON.stringify(data.claim_data, null, 2);
+                    
+                    // Display validation results
+                    const validationStatus = document.getElementById('validationStatus');
+                    const validationIssues = document.getElementById('validationIssues');
+                    
+                    let statusClass = '';
+                    switch(data.validation_results.eligibility) {
+                        case 'ELIGIBLE':
+                            statusClass = 'status-eligible';
+                            break;
+                        case 'ELIGIBLE_WITH_WARNINGS':
+                            statusClass = 'status-warning';
+                            break;
+                        case 'NEEDS_REVIEW':
+                            statusClass = 'status-review';
+                            break;
+                        case 'DENIED':
+                            statusClass = 'status-denied';
+                            break;
+                    }
+                    
+                    validationStatus.innerHTML = `<div class="status ${statusClass}">
+                        ${data.validation_results.eligibility.replace('_', ' ')}
+                        (Confidence: ${(data.validation_results.confidence * 100).toFixed(1)}%)
+                    </div>`;
+                    
+                    if (data.validation_results.issues && data.validation_results.issues.length > 0) {
+                        validationIssues.innerHTML = `
+                            <p>The following issues were detected:</p>
+                            <ul class="issue-list">
+                                ${data.validation_results.issues.map(issue => `<li>${issue}</li>`).join('')}
+                            </ul>
+                        `;
+                    } else {
+                        validationIssues.innerHTML = '<p>No issues detected.</p>';
+                    }
+                    
+                    // Display AI analysis
+                    document.getElementById('aiAnalysis').innerHTML = data.ai_analysis ? 
+                        data.ai_analysis.replace(/\n/g, '<br>') : 
+                        'AI analysis not available';
+                    
+                    // Display ZK proof if available
+                    if (data.zk_proof) {
+                        document.getElementById('proofCard').style.display = 'block';
+                        document.getElementById('zkProof').textContent = JSON.stringify(data.zk_proof, null, 2);
+                    } else {
+                        document.getElementById('proofCard').style.display = 'none';
+                    }
+                    
+                    // Display aggregator response if available
+                    if (data.aggregator_response) {
+                        document.getElementById('aggregatorCard').style.display = 'block';
+                        document.getElementById('aggregatorResponse').textContent = JSON.stringify(data.aggregator_response, null, 2);
+                    } else {
+                        document.getElementById('aggregatorCard').style.display = 'none';
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('processing').style.display = 'none';
+                    alert(`Error processing claim: ${error.message}`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
