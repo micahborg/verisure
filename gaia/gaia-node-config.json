@@ -1,0 +1,44 @@
+{
+    "node_id": "0x8600b7fb770322a38c1ba3e8fcab1f73c6cc701b",
+    "domain": "gaia.domains",
+    "public_url": "https://0x8600b7fb770322a38c1ba3e8fcab1f73c6cc701b.gaia.domains",
+    "description": "Health Insurance Claim Processing AI with ZKP integration",
+    "llm_config": {
+      "model": "Llama-3.2-3B-Instruct-Q5_K_M.gguf",
+      "system_prompt": "You are an AI assistant specializing in health insurance claims processing. Your job is to analyze claim data, identify potential issues, check for eligibility according to policy rules, and provide recommendations. Be thorough, detailed, and accurate in your assessments."
+    },
+    "embedding_model": {
+      "model": "nomic-embed-text-v1.5.f16.gguf",
+      "dimensions": 768
+    },
+    "knowledge_base": {
+      "name": "insurance_claims_kb",
+      "snapshot": "insurance_768_nomic-embed-text-v1.5-f16.snapshot",
+      "rag_prompt": "You are an AI assistant specializing in health insurance claims processing. Use information in the following context to analyze the health insurance claim data and provide insights about potential issues, eligibility, and recommendations. If you don't find relevant information in the context, use your general knowledge about health insurance claims processing. -----------"
+    },
+    "plugins": [
+      {
+        "name": "boundless",
+        "description": "Zero-knowledge proof generation for claims verification",
+        "version": "1.0.0",
+        "path": "/plugins/boundless",
+        "enabled": true
+      },
+      {
+        "name": "othentic",
+        "description": "Integration with Othentic for proof aggregation",
+        "version": "1.0.0",
+        "path": "/plugins/othentic",
+        "enabled": true
+      }
+    ],
+    "http_config": {
+      "max_request_size_mb": 10,
+      "timeout_seconds": 60,
+      "cors_origins": ["*"]
+    },
+    "resource_limits": {
+      "max_tokens_per_request": 2048,
+      "max_parallel_requests": 4
+    }
+  }
