@@ -300,3 +300,136 @@ Edit
   "total_charges": 250.00
 }
 ❌ Issue: Claim submitted more than 1 year after service date – outside filing limits.
+
+✅ Valid Claims (Correctly Filled)
+Claim #6: Specialist Consultation
+json
+Copy
+Edit
+{
+  "patient_name": "Alice Green",
+  "sfhp_id": "18273645590",
+  "dob": "1987-11-05",
+  "sex": "Female",
+  "address": "500 Park Ave, Los Angeles, CA 90001",
+  "insurance": "SFHP",
+  "date_of_service": "2025-07-20",
+  "place_of_service": "11",
+  "diagnosis_code": "E11.9",
+  "procedure_code": "99204",
+  "referring_provider": "Dr. Kevin Smith",
+  "npi": "2233445566",
+  "total_charges": 250.00
+}
+✅ Valid Claims (Correctly Filled)
+Claim #7: Hospital Admission
+json
+Copy
+Edit
+{
+  "patient_name": "Robert Johnson",
+  "sfhp_id": "73625109843",
+  "dob": "1965-02-17",
+  "sex": "Male",
+  "address": "789 Willow Dr, Miami, FL 33101",
+  "insurance": "SFHP",
+  "date_of_service": "2025-08-15",
+  "place_of_service": "21",
+  "diagnosis_code": "I21.9",
+  "procedure_code": "99223",
+  "total_charges": 5000.00
+}
+✅ Valid Claims (Correctly Filled)
+Claim #8: Lab Test & Diagnostics
+json
+Copy
+Edit
+{
+  "patient_name": "Sophia Martinez",
+  "sfhp_id": "12938475620",
+  "dob": "2000-03-28",
+  "sex": "Female",
+  "address": "342 Oak St, Boston, MA 02108",
+  "insurance": "SFHP",
+  "date_of_service": "2025-09-05",
+  "place_of_service": "81",
+  "diagnosis_code": "R50.9",
+  "procedure_code": "80053",
+  "total_charges": 75.00
+}
+❌ Invalid Claims (Incorrectly Filled)
+Claim #9: Missing Diagnosis Code
+json
+Copy
+Edit
+{
+  "patient_name": "Michael Lee",
+  "sfhp_id": "82736450192",
+  "dob": "1993-07-14",
+  "sex": "Male",
+  "address": "750 Lakeview Rd, Chicago, IL 60657",
+  "insurance": "SFHP",
+  "date_of_service": "2025-10-12",
+  "place_of_service": "11",
+  "diagnosis_code": "",
+  "procedure_code": "99213",
+  "total_charges": 140.00,
+  "errors": ["❌ Missing diagnosis code - claim may be denied."]
+}
+❌ Invalid Claims (Incorrectly Filled)
+Claim #10: Duplicate Claim for Same Patient & Service Date
+json
+Copy
+Edit
+{
+  "patient_name": "Lisa Kim",
+  "sfhp_id": "56473829104",
+  "dob": "1982-05-30",
+  "sex": "Female",
+  "address": "981 Cedar Ln, Austin, TX 73301",
+  "insurance": "SFHP",
+  "date_of_service": "2025-10-01",
+  "place_of_service": "11",
+  "diagnosis_code": "N39.0",
+  "procedure_code": "99214",
+  "total_charges": 160.00,
+  "errors": ["❌ Duplicate claim detected - this service was already billed on 2025-10-01."]
+}
+❌ Invalid Claims (Incorrectly Filled)
+Claim #11: Invalid Place of Service Code
+json
+Copy
+Edit
+{
+  "patient_name": "Kevin Brown",
+  "sfhp_id": "28374650192",
+  "dob": "1977-01-08",
+  "sex": "Male",
+  "address": "645 River Ave, Phoenix, AZ 85001",
+  "insurance": "SFHP",
+  "date_of_service": "2025-10-20",
+  "place_of_service": "99",
+  "diagnosis_code": "E66.9",
+  "procedure_code": "99213",
+  "total_charges": 120.00,
+  "errors": ["❌ Invalid place of service code - must be a recognized POS code."]
+}
+❌ Invalid Claims (Incorrectly Filled)
+Claim #12: Overcharged for Service
+json
+Copy
+Edit
+{
+  "patient_name": "Natalie Harris",
+  "sfhp_id": "94837261590",
+  "dob": "1991-12-02",
+  "sex": "Female",
+  "address": "102 Birch St, New York, NY 10001",
+  "insurance": "SFHP",
+  "date_of_service": "2025-11-08",
+  "place_of_service": "11",
+  "diagnosis_code": "M25.561",
+  "procedure_code": "97110",
+  "total_charges": 1500.00,
+  "errors": ["❌ Overcharged for procedure code 97110 - typical cost range: $50-$250."]
+}
