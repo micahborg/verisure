@@ -1,49 +1,66 @@
 "use client"; // Mark this component as a client component
 
-import React, { useRef, useState } from 'react';
-import { Button, VStack, Text, Center } from '@chakra-ui/react';
+import React, { useRef, useState } from "react";
+import { Button, VStack, Text, Center } from "@chakra-ui/react";
 
 export default function Home() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [jsonOutput, setJsonOutput] = useState<string>("");
+  const [extractedData, setExtractedData] = useState<string>(""); // State for extracted claim data
+  const [aiAnalysis, setAiAnalysis] = useState<string>(""); // State for AI analysis
 
   // Handle the file upload
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file && file.type === 'application/pdf') {
-      console.log('File selected:', file.name);
+    if (file && file.type === "application/pdf") {
+      console.log("📄 File selected:", file.name);
 
-      // Create a FormData object to send the file
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append("file", file);
 
       try {
-        // Send the file to the Flask API
-        const response = await fetch('http://localhost:5000/process-pdf', {
-          method: 'POST',
+        const response = await fetch("http://localhost:5000/process-pdf", {
+          method: "POST",
           body: formData,
         });
 
-        console.log('Response status:', response.status);
+        console.log("📡 Sent request to Flask");
 
         if (!response.ok) {
           const errorData = await response.json();
-          console.error('Error response:', errorData);
-          throw new Error('Failed to process PDF');
+          console.error("❌ Error response:", errorData);
+          throw new Error("Failed to process PDF");
         }
 
-        // Parse the JSON response
         const result = await response.json();
-        console.log('Processed data:', result.data);
+        console.log("✅ Full response:", result);
 
-        // Display the JSON output
-        setJsonOutput(JSON.stringify(result.data, null, 2)); // Format JSON with indentation
+        if (result.data) {
+          console.log("📑 Extracted Claim Data:", result.data);
+          setExtractedData(JSON.stringify(result.data, null, 2));
+        } else {
+          console.warn("⚠️ No extracted claim data found.");
+        }
+
+        if (result.ai_analysis) {
+          console.log("🤖 AI Analysis:", result.ai_analysis);
+          setAiAnalysis(JSON.stringify(result.ai_analysis, null, 2));
+        } else {
+          console.warn("⚠️ No AI analysis found.");
+        }
+
+        // Send logs to Next.js API route for terminal logging
+        fetch("/api/logs", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: "Processed PDF successfully", result }),
+        });
+
       } catch (error) {
-        console.error('Error processing PDF:', error);
-        alert('Failed to process PDF. Please try again.');
+        console.error("🔥 Error processing PDF:", error);
+        alert("Failed to process PDF. Please try again.");
       }
     } else {
-      alert('Please upload a PDF file');
+      alert("Please upload a PDF file");
     }
   };
 
@@ -55,40 +72,54 @@ export default function Home() {
   };
 
   return (
-    <>
-      <Center>
-        <VStack spacing={6}>
-          <Text>Please upload your claim (PDF)</Text>
-          <Button onClick={triggerFileInput} colorScheme="teal" size="lg">
-            Upload Claim
-          </Button>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept=".pdf"
-            onChange={handleFileUpload}
-            style={{ display: 'none' }} // Hide the file input
-          />
-          <Text mt={6}>JSON Output:</Text>
-          <VStack spacing={4}>
-            {/* Display JSON output with scrollable container */}
-            <Text
-              border="1px"
-              p={4}
-              w="100%"
-              maxW="600px"
-              maxH="400px" // Set a maximum height
-              bg="gray.100"
-              borderRadius="md"
-              textAlign="left"
-              overflowY="auto" // Enable vertical scrolling
-              whiteSpace="pre-wrap" // Preserve formatting and wrap text
-            >
-              {jsonOutput || "{ 'status': 'pending', 'claim_id': 12345 }"}
-            </Text>
-          </VStack>
-        </VStack>
-      </Center>
-    </>
+    <Center>
+      <VStack spacing={6}>
+        <Text>Please upload your claim (PDF)</Text>
+        <Button onClick={triggerFileInput} colorScheme="teal" size="lg">
+          Upload Claim
+        </Button>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".pdf"
+          onChange={handleFileUpload}
+          style={{ display: "none" }} // Hide the file input
+        />
+
+        {/* Display Extracted Data */}
+        <Text mt={6}>Extracted Claim Data:</Text>
+        <Text
+          border="1px"
+          p={4}
+          w="100%"
+          maxW="600px"
+          maxH="300px"
+          bg="gray.100"
+          borderRadius="md"
+          textAlign="left"
+          overflowY="auto"
+          whiteSpace="pre-wrap"
+        >
+          {extractedData || "No data extracted yet."}
+        </Text>
+
+        {/* Display AI Analysis */}
+        <Text mt={6}>AI Analysis:</Text>
+        <Text
+          border="1px"
+          p={4}
+          w="100%"
+          maxW="600px"
+          maxH="300px"
+          bg="gray.100"
+          borderRadius="md"
+          textAlign="left"
+          overflowY="auto"
+          whiteSpace="pre-wrap"
+        >
+          {aiAnalysis || "No AI analysis yet."}
+        </Text>
+      </VStack>
+    </Center>
   );
 }
