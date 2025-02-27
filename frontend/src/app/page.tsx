@@ -12,30 +12,30 @@ export default function Home() {
     const file = event.target.files?.[0];
     if (file && file.type === 'application/pdf') {
       console.log('File selected:', file.name);
-  
+
       // Create a FormData object to send the file
       const formData = new FormData();
       formData.append('file', file);
-  
+
       try {
         // Send the file to the Flask API
         const response = await fetch('http://localhost:5000/process-pdf', {
           method: 'POST',
           body: formData,
         });
-  
+
         console.log('Response status:', response.status);
-  
+
         if (!response.ok) {
           const errorData = await response.json();
           console.error('Error response:', errorData);
           throw new Error('Failed to process PDF');
         }
-  
+
         // Parse the JSON response
         const result = await response.json();
         console.log('Processed data:', result.data);
-  
+
         // Display the JSON output
         setJsonOutput(JSON.stringify(result.data, null, 2)); // Format JSON with indentation
       } catch (error) {
@@ -46,6 +46,7 @@ export default function Home() {
       alert('Please upload a PDF file');
     }
   };
+
   // Trigger the file input when the button is clicked
   const triggerFileInput = () => {
     if (fileInputRef.current) {
@@ -70,8 +71,19 @@ export default function Home() {
           />
           <Text mt={6}>JSON Output:</Text>
           <VStack spacing={4}>
-            {/* Display JSON output */}
-            <Text border="1px" p={4} w="100%" maxW="600px" bg="gray.100" borderRadius="md" textAlign="left">
+            {/* Display JSON output with scrollable container */}
+            <Text
+              border="1px"
+              p={4}
+              w="100%"
+              maxW="600px"
+              maxH="400px" // Set a maximum height
+              bg="gray.100"
+              borderRadius="md"
+              textAlign="left"
+              overflowY="auto" // Enable vertical scrolling
+              whiteSpace="pre-wrap" // Preserve formatting and wrap text
+            >
               {jsonOutput || "{ 'status': 'pending', 'claim_id': 12345 }"}
             </Text>
           </VStack>
