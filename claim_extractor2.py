@@ -3,7 +3,10 @@ import json
 import PyPDF2
 import fitz  # PyMuPDF for raw text extraction
 import re
+import os
 from datetime import datetime
+from openai import OpenAI
+import dataset # Import JSON string
 
 class ClaimExtractor:
     def __init__(self, pdf_path):
@@ -201,11 +204,44 @@ class ClaimExtractor:
 
 
 def main(pdf_path):
+    datasetModel = dataset.exported_json_str
     extractor = ClaimExtractor(pdf_path)
     transformed_claim_data = extractor.parse_claim_data()
     print(json.dumps(transformed_claim_data, indent=4))
+    
+    def process_claim_file(pdf_path, output_json=None):
+        """Process a claim file and optionally save to JSON."""
+        extractor = ClaimExtractor(pdf_path)
+        claim_data = extractor.parse_claim_data()
+        
+        if output_json:
+            with open(output_json, 'w') as json_file:
+                json.dump(claim_data, json_file, indent=4)
+            print(f"Extracted claim information saved to {output_json}")
+        
+        return claim_data
+    output_json_path = r"C:\Users\nisch\Desktop\verisure2\samples\JaneDoe_InsuranceClaim.json"
+    claim_data = process_claim_file(pdf_path, output_json_path)
+    
+    print(json.dumps(claim_data, indent=2))
+    client = OpenAI(base_url="https://trees.gaia.domains/v1", api_key="gaia-YWFiY2VlMjYtYjZkNS00ZWJkLTk5Y2UtZDI4ZmQyMTg1ZjFi-m6b7aJt-d49lNjEu")
+    response = client.chat.completions.create(
+        model="Meta-Llama-3.1-8B-Instruct-Q5_K_M",
+        messages=[
+            {"role": "system", "content": "Tell me what data training you can access in otherwords the dataset and claim_data. "},
+            {"role": "user", "content": str(claim_data), "dataset": datasetModel} 
+        ],
+        temperature=0.7,
+        max_tokens=500
+    )
+    print(response)
 
 
 if __name__ == "__main__":
     pdf_path = sys.argv[1] if len(sys.argv) > 1 else input("Enter PDF path: ")
     main(pdf_path)
+    
+    # pdf_path = r"C:\Users\nisch\Desktop\verisure2\samples\JaneDoe_InsuranceClaim.pdf"
+    # output_json_path = r"C:\Users\nisch\Desktop\verisure2\samples\JaneDoe_InsuranceClaim.json"
+  
+    

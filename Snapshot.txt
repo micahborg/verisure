@@ -1,0 +1,116 @@
+✅ Valid Claims (Correctly Filled)
+✅ Claim #1: Routine Office Visit
+Patient Details
+Patient Name: John Doe
+SFHP ID: 12345678901
+Date of Birth: 05/12/1980
+Sex: Male
+Address: 123 Main St, San Francisco, CA 94105
+Insurance: SFHP
+Service Details
+Date of Service: 02/15/2025
+Place of Service: 11 (Office Visit)
+Diagnosis Code: J02.9 (Acute Pharyngitis)
+Procedure Code: 99213 (Office Visit - Level 3)
+Referring Provider: Dr. Lisa Brown, NPI 1234567890
+Total Charges: $150.00
+✅ Why is this claim valid?
+
+All required fields are filled correctly.
+SFHP ID is correct (11 digits).
+Diagnosis and procedure codes match.
+Provider’s details, NPI, and Tax ID are complete.
+✅ Claim #2: Emergency Room Visit
+Patient Details
+Patient Name: Jane Smith
+SFHP ID: 10987654321
+Date of Birth: 08/22/1975
+Sex: Female
+Service Details
+Date of Service: 03/10/2025
+Place of Service: 23 (Emergency Room)
+Diagnosis Code: S93.4 (Ankle Sprain)
+Procedure Code: 99285 (ER Visit - High Complexity)
+Total Charges: $1,200.00
+✅ Why is this claim valid?
+
+Correct place of service (23 for ER).
+Diagnosis and procedure codes align properly.
+✅ Claim #3: Physical Therapy Session
+Patient Details
+Patient Name: Mark Johnson
+SFHP ID: 10293847561
+Date of Birth: 09/30/1990
+Sex: Male
+Service Details
+Date of Service: 03/05/2025
+Place of Service: 11 (Office Visit)
+Diagnosis Code: M54.5 (Lower Back Pain)
+Procedure Code: 97110 (Therapeutic Exercise)
+Total Charges: $200.00
+✅ Why is this claim valid?
+
+Correct provider information and medical necessity supported by diagnosis.
+✅ Claim #4: Pediatric Check-Up
+Patient Details
+Patient Name: Emily White
+SFHP ID: 19283746502
+Date of Birth: 01/15/2021
+Sex: Female
+Service Details
+Date of Service: 03/12/2025
+Place of Service: 11 (Office Visit)
+Diagnosis Code: Z00.129 (Routine Child Health Check)
+Procedure Code: 99391 (Preventive Medicine Check)
+Total Charges: $100.00
+✅ Why is this claim valid?
+
+Routine check-up with valid diagnosis and procedure code.
+✅ Claim #5: Hospitalization for Surgery
+Patient Details
+Patient Name: Robert Green
+SFHP ID: 11223344556
+Date of Birth: 06/21/1978
+Sex: Male
+Service Details
+Date of Service: 04/01/2025
+Place of Service: 21 (Inpatient Hospital)
+Diagnosis Code: K40.90 (Inguinal Hernia)
+Procedure Code: 49505 (Hernia Repair Surgery)
+Total Charges: $7,500.00
+✅ Why is this claim valid?
+
+Proper hospital admission details with corresponding surgery code.
+✅ Claim #6: Mental Health Therapy Session
+Patient Details
+Patient Name: Sophia Taylor
+SFHP ID: 22334455667
+Date of Birth: 10/10/1992
+Sex: Female
+Service Details
+Date of Service: 04/02/2025
+Place of Service: 11 (Office Visit)
+Diagnosis Code: F41.1 (Generalized Anxiety Disorder)
+Procedure Code: 90837 (Psychotherapy, 60 minutes)
+Total Charges: $180.00
+✅ Why is this claim valid?
+
+Matches mental health services requirements.
+❌ Invalid Claims (Incorrectly Filled)
+❌ Claim #1: Missing SFHP ID
+Error: The SFHP ID is missing, making it impossible to process.
+❌ Claim #2: Invalid Diagnosis Code for Procedure
+Error: The claim lists H52.4 (Presbyopia - vision loss) as the diagnosis but 29881 (Knee Arthroscopy) as the procedure.
+Fix: The diagnosis must match the procedure.
+❌ Claim #3: Duplicate Billing
+Error: A claim is submitted twice for the same date of service with identical procedure and diagnosis codes.
+Fix: Ensure claims are only billed once per service date.
+❌ Claim #4: Incorrect Provider Information
+Error: The provider’s NPI is missing, making it impossible to verify who performed the service.
+Fix: Ensure provider details are complete.
+❌ Claim #5: Missing Signature
+Error: The claim is missing the physician’s signature, which is required for verification.
+Fix: Ensure a valid signature is provided.
+❌ Claim #6: Exceeded Timeframe for Submission
+Error: The claim is submitted over a year after the service date, exceeding SFHP’s filing limit.
+Fix: Submit claims within the required timeframe (e.g., within 90 or 180 days, depending on policy).
