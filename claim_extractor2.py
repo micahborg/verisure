@@ -205,6 +205,7 @@ class ClaimExtractor:
 
 def main(pdf_path):
     datasetModel = dataset.exported_json_str
+    context = dataset.training_context
     extractor = ClaimExtractor(pdf_path)
     transformed_claim_data = extractor.parse_claim_data()
     print(json.dumps(transformed_claim_data, indent=4))
@@ -228,7 +229,7 @@ def main(pdf_path):
     response = client.chat.completions.create(
         model="Meta-Llama-3.1-8B-Instruct-Q5_K_M",
         messages=[
-            {"role": "system", "content": "Tell me what data training you can access in otherwords the dataset and claim_data. "},
+            {"role": "system", "content": context},
             {"role": "user", "content": str(claim_data), "dataset": datasetModel} 
         ],
         temperature=0.7,
