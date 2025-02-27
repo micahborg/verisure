@@ -16,8 +16,8 @@ $$    $$/   $$  $$/ $$ |  $$ |$$       |$$ |  $$ |  $$  $$/ $$ |$$       |
  * @notice Terms of Service: https://www.othentic.xyz/terms-of-service
  */
 
-import { IRiscZeroVerifier } from './IRiscZeroVerifier.sol';
-import { ImageID } from './ImageID.sol';
+//import { IRiscZeroVerifier } from './IRiscZeroVerifier.sol';
+//import { ImageID } from './ImageID.sol';
 import './IAvsLogic.sol';
 
 contract InsuranceEscrow is IAvsLogic {
@@ -26,8 +26,8 @@ contract InsuranceEscrow is IAvsLogic {
     address public stakingPool; // Optional: Address for staking rewards integration
     uint256 public totalEscrowBalance;
 
-    address public immutable verifier; // RISC-V Zero verifier contract
-    bytes32 public constant imageId = ImageID.PARSE_CLAIM_ID;
+    //address public immutable verifier; // RISC-V Zero verifier contract
+    //bytes32 public constant imageId = ImageID.PARSE_CLAIM_ID;
 
     mapping(address => uint256) public providerBalances;
 
@@ -35,11 +35,11 @@ contract InsuranceEscrow is IAvsLogic {
     event ClaimPaid(address indexed provider, uint256 amount);
     event EscrowWithdrawn(address indexed insurer, uint256 amount);
 
-    event ProofVerified(uint256 x);
+    //event ProofVerified(uint256 x);
 
 
-    constructor(address _verifier, address _attestationCenter, address _insuranceCompany, address _stakingPool) {
-        verifier = _verifier;
+    constructor(/*address _verifier, */address _attestationCenter, address _insuranceCompany, address _stakingPool) {
+        //verifier = _verifier;
         attestationCenter = _attestationCenter;
         insuranceCompany = _insuranceCompany;
         stakingPool = _stakingPool;
@@ -109,12 +109,12 @@ contract InsuranceEscrow is IAvsLogic {
         return totalEscrowBalance;
     }
 
-    /**
-     * @dev Call verifier contract to verify the proof of execution.
-     */
-    function verifyProof(uint256 x, bytes calldata seal) public {
-        bytes memory journal = abi.encode(x);
-        IRiscZeroVerifier(verifier).verify(seal, imageId, sha256(journal));
-        emit ProofVerified(x);
-    }
+    // /**
+    //  * @dev Call verifier contract to verify the proof of execution.
+    //  */
+    // function verifyProof(uint256 x, bytes calldata seal) public {
+    //     bytes memory journal = abi.encode(x);
+    //     IRiscZeroVerifier(verifier).verify(seal, imageId, sha256(journal));
+    //     emit ProofVerified(x);
+    // }
 }

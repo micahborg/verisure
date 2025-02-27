@@ -42,7 +42,7 @@ You can deploy your contracts and run an end-to-end test or demo as follows:
 4. Deploy your contract by running:
 
     ```bash
-    forge script --rpc-url http://localhost:8545 --broadcast script/Deploy.s.sol
+    forge script --rpc-url http://127.0.0.1:8545 --broadcast script/InsuranceEscrow.s.sol
     ```
 
     This command should output something similar to:
@@ -116,7 +116,7 @@ You can deploy your contracts on the `Sepolia` testnet and run an end-to-end tes
 3. Deploy your contract by running:
 
     ```bash
-    forge script script/InsuranceEscrow.s.sol --rpc-url https://eth-sepolia.g.alchemy.com/v2/${ALCHEMY_API_KEY:?} --broadcast
+    forge script script/InsuranceEscrow.s.sol --rpc-url https://arbitrum-sepolia.drpc.org --broadcast
     ```
 
     This command uses the `sepolia` profile defined in the [config][config] file, and should output something similar to:

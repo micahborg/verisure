@@ -10,5 +10,5 @@ riscZeroVerifierAddress = "0x925d8331ddc0a1F0d96E68CF073DFE1d92b69187"
 
 # You can add additional profiles here
 # [profile.custom]
-# chainId = 11155111
-# riscZeroVerifierAddress =
+# chainId = 31337
+# riscZeroVerifierAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"

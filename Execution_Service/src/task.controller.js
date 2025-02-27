@@ -1,29 +1,45 @@
 "use strict";
 const { Router } = require("express")
+const { execFile } = require("child_process");
+const path = require("path");
+const fs = require("fs");
 const CustomError = require("./utils/validateError");
 const CustomResponse = require("./utils/validateResponse");
 const oracleService = require("./oracle.service");
 const dalService = require("./dal.service");
 
-const router = Router()
+const rustBinaryPath = path.join(__dirname, "../../contracts_zk/target/release/publisher");
+
+const router = Router();
 
 router.post("/execute", async (req, res) => {
     console.log("Executing task");
 
-    try {
-        var taskDefinitionId = Number(req.body.taskDefinitionId) || 0;
-        console.log(`taskDefinitionId: ${taskDefinitionId}`);
+    // Write claim data to temp files
+    fs.writeFileSync("temp_claim.json", JSON.stringify(req.body.claim));
 
-        const result = await oracleService.getPrice("ETHUSDT");
-        result.price = req.body.fakePrice || result.price;
-        const cid = await dalService.publishJSONToIpfs(result);
-        const data = "hello";
-        await dalService.sendTask(cid, data, taskDefinitionId);
-        return res.status(200).send(new CustomResponse({proofOfTask: cid, data: data, taskDefinitionId: taskDefinitionId}, "Task executed successfully"));
-    } catch (error) {
-        console.log(error)
-        return res.status(500).send(new CustomError("Something went wrong", {}));
-    }
-})
+
+    execFile(rustBinaryPath, ["--claim-file", "temp_claim.json"], (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Execution error: ${error.message}`);
+            return res.status(500).send({ error: "Proof generation failed" });
+        }
+
+        if (stderr) {
+            console.error(`stderr: ${stderr}`);
+            return res.status(500).send({ error: "Proof generation error", stderr });
+        }
+
+        console.log(`Proof output: ${stdout}`);
+        const receipt = JSON.parse(stdout);  // Parse Rust JSON output
+
+        return res.status(200).send({
+            proofOfTask: receipt.control_id,
+            claimJournal: receipt.journal,
+            message: "Task executed successfully"
+        });
+    });
+});
+
 
 module.exports = router

@@ -14,7 +14,6 @@ interface IInsuranceEscrow {
     event ClaimPaid(address indexed provider, uint256 amount);
     event Deposited(address indexed insurer, uint256 amount);
     event EscrowWithdrawn(address indexed insurer, uint256 amount);
-    event ProofVerified(uint256 x);
 
     function afterTaskSubmission(
         IAttestationCenter.TaskInfo memory _taskInfo,
@@ -33,12 +32,9 @@ interface IInsuranceEscrow {
     ) external;
     function depositToEscrow() external payable;
     function getEscrowBalance() external view returns (uint256);
-    function imageId() external view returns (bytes32);
     function insuranceCompany() external view returns (address);
     function providerBalances(address) external view returns (uint256);
     function stakingPool() external view returns (address);
     function totalEscrowBalance() external view returns (uint256);
-    function verifier() external view returns (address);
-    function verifyProof(uint256 x, bytes memory seal) external;
     function withdrawEscrow(uint256 amount) external;
 }

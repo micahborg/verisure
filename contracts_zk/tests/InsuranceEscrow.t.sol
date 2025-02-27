@@ -32,8 +32,8 @@ contract InsuranceEscrowTest is RiscZeroCheats, Test {
     uint256 initialDeposit = 10 ether;
 
     function setUp() public {
-        address verifier = address(deployRiscZeroVerifier());
-        escrowContract = new InsuranceEscrow(verifier, attestationCenter, insuranceCompany, address(0));
+        //address verifier = address(deployRiscZeroVerifier());
+        escrowContract = new InsuranceEscrow(attestationCenter, insuranceCompany, address(0));
 
         assertEq(escrowContract.totalEscrowBalance(), 0, "Escrow balance should be zero initially");
 
@@ -129,13 +129,13 @@ contract InsuranceEscrowTest is RiscZeroCheats, Test {
         assertEq(provider.balance, 0, "Provider should not have received any payout");
     }
 
-    function testVerifyProof() public {
-        uint256 number = 0;
-        (bytes memory journal, bytes memory seal) = prove(Elf.PARSE_CLAIM_PATH, abi.encode(number));
+    // function testVerifyProof() public {
+    //     uint256 number = 0;
+    //     (bytes memory journal, bytes memory seal) = prove(Elf.PARSE_CLAIM_PATH, abi.encode(number));
 
-        escrowContract.verifyProof(abi.decode(journal, (uint256)), seal);
+    //     escrowContract.verifyProof(abi.decode(journal, (uint256)), seal);
         
-    }
+    // }
 
 
 }

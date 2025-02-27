@@ -16,75 +16,34 @@
 // to the Bonsai proving service and publish the received proofs directly
 // to your deployed app contract.
 
-use alloy::{
-    network::EthereumWallet, providers::ProviderBuilder, signers::local::PrivateKeySigner,
-    sol_types::SolValue,
-};
-use alloy_primitives::{Address, U256};
-use anyhow::{Context, Result};
+use anyhow::{Result};
 use clap::Parser;
 use methods::PARSE_CLAIM_ELF;
-//use json_core::Outputs;
-use risc0_ethereum_contracts::encode_seal;
+use serde_json::json;
+use json_core::Outputs;
 use risc0_zkvm::{default_prover, ExecutorEnv/*, ProverOpts, VerifierContext*/};
-use url::Url;
 
-// `IInsuranceEscrow` interface automatically generated via the alloy `sol!` macro.
-alloy::sol!(
-    #[sol(rpc, all_derives)]
-    "../contracts/IInsuranceEscrow.sol"
-);
 
 /// Arguments of the publisher CLI.
 #[derive(Parser, Debug)]
 #[clap(author, version, about, long_about = None)]
 struct Args {
-    /// Ethereum chain ID
-    #[clap(long)]
-    chain_id: u64,
-
-    /// Ethereum Node endpoint.
-    #[clap(long, env)]
-    eth_wallet_private_key: PrivateKeySigner,
-
-    /// Ethereum Node endpoint.
-    #[clap(long)]
-    rpc_url: Url,
-
-    /// Application's contract address on Ethereum
-    #[clap(long)]
-    contract: Address,
-
-    /// The input to provide to the guest binary
+    /// Path to the JSON claim data file
     #[clap(short, long)]
-    input: U256,
+    claim_file: String,
 }
+
 
 fn main() -> Result<()> {
     env_logger::init();
-    // Parse CLI Arguments: The application starts by parsing command-line arguments provided by the user.
     let args = Args::parse();
 
-    // Create an alloy provider for that private key and URL.
-    let wallet = EthereumWallet::from(args.eth_wallet_private_key);
-    let provider = ProviderBuilder::new()
-        .with_recommended_fillers()
-        .wallet(wallet)
-        .on_http(args.rpc_url);
+    // Read claim JSON file dynamically
+    let claim_data = std::fs::read_to_string(&args.claim_file)
+        .expect("Error reading claim file");
 
-    // // ABI encode input: Before sending the proof request to the Bonsai proving service,
-    // // the input number is ABI-encoded to match the format expected by the guest code running in the zkVM.
-    // let input = args.input.abi_encode();
-
-    // Read claim JSON and required fields
-    let claim_data = include_str!("../../res/claim.json");//.expect("Error reading claim file");
-    let required_fields = include_str!("../../res/required.json");//.expect("Error reading required fields");
-
-    // Build ExecutorEnv with BOTH claim_data & required_fields
     let env = ExecutorEnv::builder()
-        .write(&claim_data) 
-        .unwrap()
-        .write(&required_fields)
+        .write(&claim_data)
         .unwrap()
         .build()
         .unwrap();
@@ -94,37 +53,17 @@ fn main() -> Result<()> {
 
     match prove_result {
         Ok(proof_session) => {
-            // Proof generation succeeded
             let receipt = proof_session.receipt;
+            let outputs: Outputs = receipt.journal.decode().unwrap();
 
-            // Encode the seal with the selector.
-            let seal = encode_seal(&receipt)?;
+            // Output proof JSON to stdout (so Node.js can capture it)
+            let output = json!({
+                "receipt": receipt,
+                "total_charge": outputs.data,
+                "hash": outputs.hash,
+            });
 
-            // Extract the journal from the receipt.
-            let journal = receipt.journal.bytes.clone();
-
-            println!("Proof generated successfully!");
-            println!("Journal: {:?}", journal);
-
-            // Decode Journal: Upon receiving the proof, the application decodes the journal to extract
-            // the verified number. This ensures that the number being submitted to the blockchain matches
-            // the number that was verified off-chain.
-            let x = U256::abi_decode(&journal, true).context("decoding journal data")?;
-
-            // Construct function call: Using the IInsuranceEscrow interface, the application constructs
-            // the ABI-encoded function call for the verifyProof function of the InsuranceEscrow contract.
-            // This call includes the verified number, the post-state digest, and the seal (proof).
-            let contract = IInsuranceEscrow::new(args.contract, provider);
-            let call_builder = contract.verifyProof(x, seal.into());
-
-            // Initialize the async runtime environment to handle the transaction sending.
-            let runtime = tokio::runtime::Runtime::new()?;
-
-            // Send transaction: Finally, send the transaction to the Ethereum blockchain,
-            // effectively calling the set function of the EvenNumber contract with the verified number and proof.
-            let pending_tx = runtime.block_on(call_builder.send())?;
-            runtime.block_on(pending_tx.get_receipt())?;
-            println!("Transaction sent successfully!");
+            println!("{}", output.to_string());
             Ok(())
         },
         Err(prove_err) => {
@@ -133,3 +72,4 @@ fn main() -> Result<()> {
         }
     }
 }
+

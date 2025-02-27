@@ -1,6 +1,6 @@
 {
     "1_type_of_insurance": "GROUP HEALTH PLAN",
-    "1a_identification_number": "",
+    "1a_identification_number": "54",
     "2_patient_name": "DOE, JANE K",
     "3_patient_dob": "06/14/2000",
     "3_patient_sex": "F",
@@ -125,7 +125,7 @@
     "25_federal_tax_id": "123456789",
     "26_patient_account_number": "123456789",
     "27_accept_assignment": "Yes",
-    "28_total_charge": 116.00,
+    "28_total_charge": "116.00",
     "29_amount_paid": "0.00",
     "31_signature_is_valid": "Yes",
     "33_billing_provider_info": "KFC Hospital, 1234 Main Street, Denver, Colorado, 80202"

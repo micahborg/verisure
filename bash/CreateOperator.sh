@@ -1,6 +1,6 @@
 source .env.local
 
-RPC=https://rpc.ankr.com/eth_holesky/80921f6657bf5ad15fb4577b369c28c4f84a652625322575f085fceaa7e47653
+RPC=https://arbitrum-sepolia.drpc.org
 
 
 OPERATOR_ACCOUNT1=$(openssl rand -hex 32)
