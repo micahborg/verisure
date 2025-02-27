@@ -114,3 +114,189 @@ Fix: Ensure a valid signature is provided.
 ❌ Claim #6: Exceeded Timeframe for Submission
 Error: The claim is submitted over a year after the service date, exceeding SFHP’s filing limit.
 Fix: Submit claims within the required timeframe (e.g., within 90 or 180 days, depending on policy).
+
+✅ Valid Claims (Correctly Filled)
+Claim #1: Routine Office Visit
+json
+Copy
+Edit
+{
+  "patient_name": "John Doe",
+  "sfhp_id": "12345678901",
+  "dob": "1980-05-12",
+  "sex": "Male",
+  "address": "123 Main St, San Francisco, CA 94105",
+  "insurance": "SFHP",
+  "date_of_service": "2025-02-15",
+  "place_of_service": "11",
+  "diagnosis_code": "J02.9",
+  "procedure_code": "99213",
+  "referring_provider": "Dr. Lisa Brown",
+  "npi": "1234567890",
+  "total_charges": 150.00
+}
+Claim #2: Emergency Room Visit
+json
+Copy
+Edit
+{
+  "patient_name": "Jane Smith",
+  "sfhp_id": "10987654321",
+  "dob": "1975-08-22",
+  "sex": "Female",
+  "address": "789 Pine St, Oakland, CA 94607",
+  "insurance": "SFHP",
+  "date_of_service": "2025-03-10",
+  "place_of_service": "23",
+  "diagnosis_code": "S93.4",
+  "procedure_code": "99285",
+  "total_charges": 1200.00
+}
+Claim #3: Physical Therapy
+json
+Copy
+Edit
+{
+  "patient_name": "Mark Johnson",
+  "sfhp_id": "10293847561",
+  "dob": "1990-09-30",
+  "sex": "Male",
+  "address": "456 Elm St, Denver, CO 80202",
+  "insurance": "SFHP",
+  "date_of_service": "2025-04-01",
+  "place_of_service": "11",
+  "diagnosis_code": "M54.5",
+  "procedure_code": "97110",
+  "total_charges": 200.00
+}
+Claim #4: Pediatric Check-Up
+json
+Copy
+Edit
+{
+  "patient_name": "Emily White",
+  "sfhp_id": "19283746502",
+  "dob": "2021-01-15",
+  "sex": "Female",
+  "address": "890 Maple St, Seattle, WA 98101",
+  "insurance": "SFHP",
+  "date_of_service": "2025-06-12",
+  "place_of_service": "11",
+  "diagnosis_code": "Z00.129",
+  "procedure_code": "99391",
+  "total_charges": 100.00
+}
+Claim #5: Mental Health Therapy
+json
+Copy
+Edit
+{
+  "patient_name": "Sophia Taylor",
+  "sfhp_id": "22334455667",
+  "dob": "1992-10-10",
+  "sex": "Female",
+  "address": "789 Oak Ave, Miami, FL 33101",
+  "insurance": "SFHP",
+  "date_of_service": "2025-05-03",
+  "place_of_service": "11",
+  "diagnosis_code": "F41.1",
+  "procedure_code": "90837",
+  "total_charges": 180.00
+}
+❌ Invalid Claims (Incorrectly Filled or Fraudulent)
+Claim #1: Missing SFHP ID
+json
+Copy
+Edit
+{
+  "patient_name": "Michael Lee",
+  "sfhp_id": "",
+  "dob": "1985-07-11",
+  "sex": "Male",
+  "address": "111 Birch Rd, Dallas, TX 75001",
+  "insurance": "SFHP",
+  "date_of_service": "2025-03-08",
+  "place_of_service": "11",
+  "diagnosis_code": "M54.5",
+  "procedure_code": "99213",
+  "total_charges": 120.00
+}
+❌ Issue: SFHP ID is missing – cannot verify patient eligibility.
+
+Claim #2: Incorrect Diagnosis for Procedure
+json
+Copy
+Edit
+{
+  "patient_name": "Amanda Rogers",
+  "sfhp_id": "55512345678",
+  "dob": "1990-04-05",
+  "sex": "Female",
+  "address": "908 Westwood Dr, Los Angeles, CA 90012",
+  "insurance": "SFHP",
+  "date_of_service": "2025-02-27",
+  "place_of_service": "21",
+  "diagnosis_code": "H52.4",
+  "procedure_code": "29881",
+  "total_charges": 6200.00
+}
+❌ Issue: Diagnosis (H52.4 - Presbyopia) does not match procedure (29881 - Knee Surgery).
+
+Claim #3: Duplicate Submission
+json
+Copy
+Edit
+{
+  "patient_name": "Greg Walters",
+  "sfhp_id": "32165498701",
+  "dob": "1975-01-29",
+  "sex": "Male",
+  "address": "777 Forest St, Miami, FL 33133",
+  "insurance": "SFHP",
+  "date_of_service": "2025-03-05",
+  "place_of_service": "11",
+  "diagnosis_code": "J02.9",
+  "procedure_code": "99213",
+  "total_charges": 150.00
+}
+❌ Issue: Duplicate claim detected for the same patient and service date.
+
+Claim #4: Fraudulent Provider Details
+json
+Copy
+Edit
+{
+  "patient_name": "David Smith",
+  "sfhp_id": "56789012345",
+  "dob": "1978-03-12",
+  "sex": "Male",
+  "address": "555 Main St, Boston, MA 02101",
+  "insurance": "SFHP",
+  "date_of_service": "2025-07-10",
+  "place_of_service": "11",
+  "diagnosis_code": "J02.9",
+  "procedure_code": "99213",
+  "referring_provider": "Dr. Fake Name",
+  "npi": "0000000000",
+  "total_charges": 300.00
+}
+❌ Issue: Fake NPI number – flagged as potential fraud.
+
+Claim #5: Exceeded Submission Deadline
+json
+Copy
+Edit
+{
+  "patient_name": "Lisa Kim",
+  "sfhp_id": "77788899900",
+  "dob": "1983-06-25",
+  "sex": "Female",
+  "address": "654 Greenway Blvd, Austin, TX 73301",
+  "insurance": "SFHP",
+  "date_of_service": "2023-09-20",
+  "place_of_service": "11",
+  "diagnosis_code": "M54.5",
+  "procedure_code": "99213",
+  "total_charges": 250.00
+}
+❌ Issue: Claim submitted more than 1 year after service date – outside filing limits.
