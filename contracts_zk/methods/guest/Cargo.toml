@@ -1,0 +1,22 @@
+[package]
+name = "guests"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "parse-claim"
+path = "src/bin/parse_claim.rs"
+
+[workspace]
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+json = "0.12"
+json-core = { path = "../../core" }
+alloy-primitives = { version = "0.8", default-features = false, features = ["rlp", "serde", "std"] }
+alloy-sol-types = { version = "0.8" }
+risc0-zkvm = { version = "1.2", default-features = false, features = ['std'] }
+
+[profile.release]
+lto = "thin"

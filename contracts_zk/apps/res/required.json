@@ -1,0 +1,20 @@
+[
+  "1a_identification_number",
+  "2_patient_name",
+  "3_patient_dob",
+  "3_patient_sex",
+  "5_patient_address",
+  "11d_other_health_benefit_plan",
+  "14_date_of_current_illness",
+  "21_diagnosis_codes",
+  "24a_dates_of_service",
+  "24b_place_of_service",
+  "24d_procedure_codes",
+  "24e_diagnosis_pointer",
+  "24f_charges",
+  "24g_days_or_units",
+  "25_federal_tax_id",
+  "28_total_charge",
+  "31_signature_is_valid",
+  "33_billing_provider_info"
+]

@@ -1,0 +1,247 @@
+[
+  {
+    "field_name": "1_type_of_insurance",
+    "required?": "optional",
+    "description": "Type of Insurance"
+  },
+  {
+    "field_name": "1a_identification_number",
+    "required?": "Required",
+    "description": "Insured's SFHP ID Number"
+  },
+  {
+    "field_name": "2_patient_name",
+    "required?": "Required",
+    "description": "Patient's Name"
+  },
+  {
+    "field_name": "3_patient_dob",
+    "required?": "Required",
+    "description": "Patient's Birth date"
+  },
+  {
+    "field_name": "3_patient_sex",
+    "required?": "Required",
+    "description": "Patient's Gender"
+  },
+  {
+    "field_name": "4_policy_holder_name",
+    "required?": "If Applicable",
+    "description": "Insured's Name"
+  },
+  {
+    "field_name": "5_patient_address",
+    "required?": "Required",
+    "description": "Patient's Address"
+  },
+  {
+    "field_name": "6_relationship_to_policy_holder",
+    "required?": "If Applicable",
+    "description": "Patient's Relationship to Insured"
+  },
+  {
+    "field_name": "7_policy_holder_address",
+    "required?": "not required",
+    "description": "Insured's Address"
+  },
+  {
+    "field_name": "10a_patient_condition_related_to_employment",
+    "required?": "not required",
+    "description": "Patient's Condition Relation"
+  },
+  {
+    "field_name": "10b_patient_condition_related_to_auto_accident",
+    "required?": "not required",
+    "description": "Patient's Condition Relation"
+  },
+  {
+    "field_name": "10c_patient_condition_related_to_other_accident",
+    "required?": "not required",
+    "description": "Patient's Condition Relation"
+  },
+  {
+    "field_name": "11_policy_holder_group_number",
+    "required?": "not required",
+    "description": "Insured's Information"
+  },
+  {
+    "field_name": "11a_policy_holder_dob",
+    "required?": "not required",
+    "description": "Insured's Information"
+  },
+  {
+    "field_name": "11a_policy_holder_sex",
+    "required?": "not required",
+    "description": "Insured's Information"
+  },
+  {
+    "field_name": "11b_policy_holder_other_claim_id",
+    "required?": "not required",
+    "description": "Insured's Information"
+  },
+  {
+    "field_name": "11c_insurance_plan_name",
+    "required?": "If Applicable",
+    "description": "For Medicare/Medi-Cal crossover claims"
+  },
+  {
+    "field_name": "11d_other_health_benefit_plan",
+    "required?": "Required",
+    "description": "Is there another health benefit plan?"
+  },
+  {
+    "field_name": "12_patient_valid_signed",
+    "required?": "not required",
+    "description": "Signature and Date"
+  },
+  {
+    "field_name": "13_polcy_holder_valid_signed",
+    "required?": "not required",
+    "description": "Insured's or Authorized Person's Signature"
+  },
+  {
+    "field_name": "14_date_of_current_illness",
+    "required?": "Required",
+    "description": "Date of Current - Illness (First Symptom) OR Injury OR Pregnancy (LMP)"
+  },
+  {
+    "field_name": "15_date_of_similar_illness",
+    "required?": "not required",
+    "description": "If patient had same or similar illness give first date"
+  },
+  {
+    "field_name": "16_date_unable_to_work",
+    "required?": "not required",
+    "description": "Dates Patient Unable to Work in Current Occupation"
+  },
+  {
+    "field_name": "17_name_of_other_source",
+    "required?": "If Applicable",
+    "description": "Name of Referring Provider or Other Source"
+  },
+  {
+    "field_name": "17a_referring_physician_id",
+    "required?": "If Applicable",
+    "description": "ID Number of Referring Physician"
+  },
+  {
+    "field_name": "17b_referring_physician_npi",
+    "required?": "If Applicable",
+    "description": "NPI - Enter Referring Provider's NPI number"
+  },
+  {
+    "field_name": "18_date_of_hospital_stay",
+    "required?": "If Applicable",
+    "description": "Hospitalization Dates Related to Current Services"
+  },
+  {
+    "field_name": "19_additional_claim_info",
+    "required?": "If Applicable",
+    "description": "Reserved for Local Use"
+  },
+  {
+    "field_name": "20_outside_lab_charges",
+    "required?": "If Applicable",
+    "description": "Outside Lab?"
+  },
+  {
+    "field_name": "21_diagnosis_codes",
+    "required?": "Required",
+    "description": "Diagnosis or Nature of Illness or Injury"
+  },
+  {
+    "field_name": "22_resubmission_code",
+    "required?": "not required",
+    "description": "Medicaid Resubmission Code"
+  },
+  {
+    "field_name": "23_prior_authorization_number",
+    "required?": "If Applicable",
+    "description": "Prior Authorization Number"
+  },
+  {
+    "field_name": "24a_dates_of_service",
+    "required?": "Required",
+    "description": "Dates of Service"
+  },
+  {
+    "field_name": "24b_place_of_service",
+    "required?": "Required",
+    "description": "Place of Service"
+  },
+  {
+    "field_name": "24c_emergency_indicator",
+    "required?": "If Applicable",
+    "description": "Emergency Indicator"
+  },
+  {
+    "field_name": "24d_procedure_codes",
+    "required?": "Required",
+    "description": "Procedures, Services or Supplies"
+  },
+  {
+    "field_name": "24e_diagnosis_pointer",
+    "required?": "Required",
+    "description": "Diagnosis Pointer"
+  },
+  {
+    "field_name": "24f_charges",
+    "required?": "Required",
+    "description": "Charges"
+  },
+  {
+    "field_name": "24g_days_or_units",
+    "required?": "Required",
+    "description": "Days or Units"
+  },
+  {
+    "field_name": "24h_epsdt_family_plan",
+    "required?": "If Applicable",
+    "description": "EPSDT Family Plan"
+  },
+  {
+    "field_name": "24i_id_qualifier",
+    "required?": "If Applicable",
+    "description": "ID Qualifier"
+  },
+  {
+    "field_name": "24j_rendering_provider_id",
+    "required?": "If Applicable",
+    "description": "Rendering Provider ID #/ NPI"
+  },
+  {
+    "field_name": "25_federal_tax_id",
+    "required?": "Required",
+    "description": "Federal Tax ID Number"
+  },
+  {
+    "field_name": "26_patient_account_number",
+    "required?": "optional",
+    "description": "Patient's Account Number"
+  },
+  {
+    "field_name": "27_accept_assignment",
+    "required?": "not required",
+    "description": "Accept Assignment?"
+  },
+  {
+    "field_name": "28_total_charge",
+    "required?": "Required",
+    "description": "Total Charge"
+  },
+  {
+    "field_name": "29_amount_paid",
+    "required?": "If Applicable",
+    "description": "Amount Paid"
+  },
+  {
+    "field_name": "31_signature_is_valid",
+    "required?": "Required",
+    "description": "Signature of Physician or Supplier Including Degrees or Credentials"
+  },
+  {
+    "field_name": "33_billing_provider_info",
+    "required?": "Required",
+    "description": "Billing Provider Info & Phone #"
+  }
+]

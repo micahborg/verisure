@@ -1,0 +1,1 @@
+[{"inputs":[{"internalType":"address","name":"_avsLogic","type":"address"}],"name":"setAvsLogic","outputs":[],"stateMutability":"nonpayable","type":"function"}]
