@@ -2,7 +2,7 @@
 
 ### **AI & ZK-Powered AVS for Insurance Claims Validation**
 
-![Architecture Diagram](../frontend/public/diagrams/ArchitectureDiagram.png)
+![Architecture Diagram](https://github.com/micahborg/verisure/blob/main/frontend/public/diagrams/ArchitectureDiagram.png)
 
 ## **Context & Problem Statement**
 
