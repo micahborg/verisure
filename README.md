@@ -1,4 +1,4 @@
-# **VerifiSure — README**
+# **VerifiSure**
 
 ### **AI & ZK-Powered AVS for Insurance Claims Validation**
 
