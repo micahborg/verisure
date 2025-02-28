@@ -1,25 +1,23 @@
-require('dotenv').config();
-const dalService = require("./dal.service");
-const oracleService = require("./oracle.service");
+require("dotenv").config();
+const fs = require("fs");
+const snarkjs = require("snarkjs");
 
 async function validate(proofOfTask) {
-
   try {
-      const taskResult = await dalService.getIPfsTask(proofOfTask);
-      var data = await oracleService.getPrice("ETHUSDT");
-      const upperBound = data.price * 1.05;
-      const lowerBound = data.price * 0.95;
-      let isApproved = true;
-      if (taskResult.price > upperBound || taskResult.price < lowerBound) {
-        isApproved = false;
-      }
-      return isApproved;
-    } catch (err) {
-      console.error(err?.message);
-      return false;
-    }
+    console.log("Verifying proof...");
+
+    // Load Verifier Key (You must generate a `verification_key.json`)
+    const vKey = JSON.parse(fs.readFileSync("./verification_key.json"));
+
+    // Verify the proof using snarkjs
+    const isValid = await snarkjs.groth16.verify(vKey, proofOfTask.publicSignals, proofOfTask.proof);
+
+    console.log(isValid ? "Proof is valid!" : "Proof is invalid.");
+    return isValid;
+  } catch (err) {
+    console.error("Verification failed:", err.message);
+    return false;
   }
-  
-  module.exports = {
-    validate,
-  }
+}
+
+module.exports = { validate };

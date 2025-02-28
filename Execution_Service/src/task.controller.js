@@ -3,12 +3,9 @@ const { Router } = require("express")
 const { execFile } = require("child_process");
 const path = require("path");
 const fs = require("fs");
-const CustomError = require("./utils/validateError");
-const CustomResponse = require("./utils/validateResponse");
-const oracleService = require("./oracle.service");
-const dalService = require("./dal.service");
 
-const rustBinaryPath = path.join(__dirname, "../../contracts_zk/target/release/publisher");
+//const rustBinaryPath = path.join(__dirname, "../contracts_zk/target/release/publisher");
+const rustBinaryPath = path.join(__dirname, "utils", "publisher");
 
 const router = Router();
 
@@ -16,8 +13,7 @@ router.post("/execute", async (req, res) => {
     console.log("Executing task");
 
     // Write claim data to temp files
-    fs.writeFileSync("temp_claim.json", JSON.stringify(req.body.claim));
-
+    fs.writeFileSync("temp_claim.json", JSON.stringify(req.body));
 
     execFile(rustBinaryPath, ["--claim-file", "temp_claim.json"], (error, stdout, stderr) => {
         if (error) {

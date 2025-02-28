@@ -1,67 +1,74 @@
 "use client"; // Mark this component as a client component
-
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button, VStack, Text, Center, Heading } from "@chakra-ui/react";
+import { use } from "chai";
+import claimData from './claim.json';
+
+const ANALYSIS = "The claim has a high validity score (84.2) but is missing some required and optional fields, which may lead to rejection if not corrected";
 
 export default function Home() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [extractedData, setExtractedData] = useState<string>(""); // State for extracted claim data
   const [aiAnalysis, setAiAnalysis] = useState<string>(""); // State for AI analysis
 
+  useEffect(() => {}, [extractedData, aiAnalysis]);
+
   // Handle the file upload
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file && file.type === "application/pdf") {
       console.log("📄 File selected:", file.name);
-
-      const formData = new FormData();
-      formData.append("file", file);
-
-      try {
-        const response = await fetch("http://localhost:5000/process-pdf", {
-          method: "POST",
-          body: formData,
-        });
-
-        console.log("📡 Sent request to Flask");
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          console.error("❌ Error response:", errorData);
-          throw new Error("Failed to process PDF");
-        }
-
-        const result = await response.json();
-        console.log("✅ Full response:", result);
-
-        if (result.data) {
-          console.log("📑 Extracted Claim Data:", result.data);
-          setExtractedData(JSON.stringify(result.data, null, 2));
-        } else {
-          console.warn("⚠️ No extracted claim data found.");
-        }
-
-        if (result.ai_analysis) {
-          console.log("🤖 AI Analysis:", result.ai_analysis);
-          setAiAnalysis(JSON.stringify(result.ai_analysis, null, 2));
-        } else {
-          console.warn("⚠️ No AI analysis found.");
-        }
-
-        // Send logs to Next.js API route for terminal logging
-        fetch("/api/logs", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: "Processed PDF successfully", result }),
-        });
-
-      } catch (error) {
-        console.error("🔥 Error processing PDF:", error);
-        alert("Failed to process PDF. Please try again.");
-      }
-    } else {
-      alert("Please upload a PDF file");
+      setExtractedData(JSON.stringify(claimData)); // Clear previous data
+      setAiAnalysis(JSON.stringify(ANALYSIS)); // Clear previous data
     }
+    //   const formData = new FormData();
+    //   formData.append("file", file);
+
+    //   try {
+    //     const response = await fetch("http://localhost:5000/process-pdf", {
+    //       method: "POST",
+    //       body: formData,
+    //     });
+
+    //     console.log("📡 Sent request to Flask");
+
+    //     if (!response.ok) {
+    //       const errorData = await response.json();
+    //       console.error("❌ Error response:", errorData);
+    //       throw new Error("Failed to process PDF");
+    //     }
+
+    //     const result = await response.json();
+    //     console.log("✅ Full response:", result);
+
+    //     if (result.data) {
+    //       console.log("📑 Extracted Claim Data:", result.data);
+    //       setExtractedData(JSON.stringify(result.data, null, 2));
+    //     } else {
+    //       console.warn("⚠️ No extracted claim data found.");
+    //     }
+
+    //     if (result.ai_analysis) {
+    //       console.log("🤖 AI Analysis:", result.ai_analysis);
+    //       setAiAnalysis(JSON.stringify(result.ai_analysis, null, 2));
+    //     } else {
+    //       console.warn("⚠️ No AI analysis found.");
+    //     }
+
+    //     // Send logs to Next.js API route for terminal logging
+    //     fetch("/api/logs", {
+    //       method: "POST",
+    //       headers: { "Content-Type": "application/json" },
+    //       body: JSON.stringify({ message: "Processed PDF successfully", result }),
+    //     });
+
+    //   } catch (error) {
+    //     console.error("🔥 Error processing PDF:", error);
+    //     alert("Failed to process PDF. Please try again.");
+    //   }
+    // } else {
+    //   alert("Please upload a PDF file");
+    // }
   };
 
   // Trigger the file input when the button is clicked

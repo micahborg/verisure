@@ -1,0 +1,132 @@
+{
+    "1_type_of_insurance": "GROUP HEALTH PLAN",
+    "1a_identification_number": "54",
+    "2_patient_name": "DOE, JANE K",
+    "3_patient_dob": "06/14/2000",
+    "3_patient_sex": "F",
+    "4_policy_holder_name": "DOE, DANIEL",
+    "5_patient_address": "1874 Curtis Hotel, Denver, Colorado, 80202",
+    "6_relationship_to_policy_holder": "Spouse",
+    "7_policy_holder_address": "1874 Curtis Hotel, Denver, Colorado, 80202",
+    "10a_patient_condition_related_to_employment": "NO",
+    "10b_patient_condition_related_to_auto_accident": "NO",
+    "10c_patient_condition_related_to_other_accident": "NO",
+    "11_policy_holder_group_number": "G1113",
+    "11a_policy_holder_dob": "01/22/1999",
+    "11a_policy_holder_sex": "M",
+    "11b_policy_holder_other_claim_id": "",
+    "11c_insurance_plan_name": "",
+    "11d_other_health_benefit_plan": "NO",
+    "12_patient_valid_signed": "Yes",
+    "13_polcy_holder_valid_signed": "Yes",
+    "14_date_of_current_illness": "02/23/2025",
+    "15_date_of_similar_illness": "",
+    "16_date_unable_to_work": "02/23/2025 - 03/02/2025",
+    "17_name_of_other_source": "",
+    "17a_referring_physician_id": "",
+    "17b_referring_physician_npi": "",
+    "18_date_of_hospital_stay": "",
+    "19_additional_claim_info": "",
+    "20_outside_lab_charges": "",
+    "21_diagnosis_codes": [
+        "F000"
+    ],
+    "22_resubmission_code": "",
+    "23_prior_authorization_number": "",
+    "24a_dates_of_service": [
+        "02/23/2025 - 02/25/2025",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    "24b_place_of_service": [
+        "11",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    "24c_emergency_indicator": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    "24d_procedure_codes": [
+        "99215",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    "24e_diagnosis_pointer": [
+        "AB",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    "24f_charges": [
+        "116.00",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    "24g_days_or_units": [
+        "1",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    "24h_epsdt_family_plan": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    "24i_id_qualifier": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    "24j_rendering_provider_id": [
+        "1234567890",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    "25_federal_tax_id": "123456789",
+    "26_patient_account_number": "123456789",
+    "27_accept_assignment": "Yes",
+    "28_total_charge": "116.00",
+    "29_amount_paid": "0.00",
+    "31_signature_is_valid": "Yes",
+    "33_billing_provider_info": "KFC Hospital, 1234 Main Street, Denver, Colorado, 80202"
+}
