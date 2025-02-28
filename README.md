@@ -1,114 +1,67 @@
-# Simple Price Oracle AVS Example
+# **VerifiSure — README**
 
-This repository demonstrates how to implement a simple price oracle AVS using the Othentic Stack.
+### **AI & ZK-Powered AVS for Insurance Claims Validation**
 
----
+## **Context & Problem Statement**
 
-## Table of Contents
+**For many patients, insurance claim delays aren’t just frustrating—they’re life-threatening.** People facing urgent medical conditions, including terminal illnesses, are often left in limbo, unsure whether they can afford life-saving treatments while waiting for insurers to process claims. These long wait times create **immense emotional, physical, and financial stress**, forcing patients and families into impossible choices.
 
-1. [Overview](#overview)
-2. [Project Structure](#project-structure)
-3. [Architecture](#architecture)
-4. [Prerequisites](#prerequisites)
-5. [Installation](#installation)
-6. [Usage](#usage)
+Meanwhile, insurance companies face exploitation by bad actors looking to abuse the system with fraudulent claims, increasing the burden on the patient with tighter restrictions and increased insurance premiums. These increases make healthcare more out of reach for the average person.
 
----
+The result? A vicious cycle where **trust erodes, costs rise, and patients suffer.**
 
-## Overview
+## By the numbers
 
-The Simple Price Oracle AVS Example demonstrates how to deploy a minimal AVS using Othentic Stack.
+- 75% of those who experienced coverage denials reported **delays in care**, and 47% of patients who faced coverage denials indicated that their health conditions deteriorated as a result. (https://www.ajmc.com/view/survey-exposes-pervasive-billing-errors-aggressive-tactics-in-us-health-insurance)
+- 54% of patients reported that health insurance was **too expensive** as part of their family budget, had difficulty affording insurance, or both. (https://www.aha.org/news/perspective/2023-07-14-lets-end-commercial-insurer-barriers-reduce-access-care)
+- Healthcare fraud and abuse combined cost the U.S. an estimated **$308 billion annually**.(https://www.forbes.com/advisor/insurance/fraud-statistics/)
+- In a survey of 1,000 doctors, 30% said they waited at least three business days on average for a prior authorization decision from health plans (https://www.ama-assn.org/practice-management/prior-authorization/how-insurance-companies-red-tape-can-delay-patient-care).
 
+## Medical Claims: A Timeline
 
+When you schedule a visit to a healthcare provider, they will normally ask you for at least 3 things:
 
-### Features
+- Your Name
+- Your Date of Birth
+- Your Insurance Information
 
-- **Containerised deployment:** Simplifies deployment and scaling.
-- **Prometheus and Grafana integration:** Enables real-time monitoring and observability.
+This information is necessary to begin the Revenue Cycle. But how do these providers manage patient data, insurance claims, and billing all at the some time?
 
-## Project Structure
+### Medical Claims Clearinghouse
 
-```mdx
-📂 simple-price-oracle-avs-example
-├── 📂 Execution_Service         # Implements Task execution logic - Express JS Backend
-│   ├── 📂 config/
-│   │   └── app.config.js        # An Express.js app setup with dotenv, and a task controller route for handling `/task` endpoints.
-│   ├── 📂 src/
-│   │   └── dal.service.js       # A module that interacts with Pinata for IPFS uploads
-│   │   ├── oracle.service.js    # A utility module to fetch the current price of a cryptocurrency pair from the Binance API
-│   │   ├── task.controller.js   # An Express.js router handling a `/execute` POST endpoint
-│   │   ├── 📂 utils             # Defines two custom classes, CustomResponse and CustomError, for standardizing API responses
-│   ├── Dockerfile               # A Dockerfile that sets up a Node.js (22.6) environment, exposes port 8080, and runs the application via index.js
-|   ├── index.js                 # A Node.js server entry point that initializes the DAL service, loads the app configuration, and starts the server on the specified port
-│   └── package.json             # Node.js dependencies and scripts
-│
-├── 📂 Validation_Service         # Implements task validation logic - Express JS Backend
-│   ├── 📂 config/
-│   │   └── app.config.js         # An Express.js app setup with a task controller route for handling `/task` endpoints.
-│   ├── 📂 src/
-│   │   └── dal.service.js        # A module that interacts with Pinata for IPFS uploads
-│   │   ├── oracle.service.js     # A utility module to fetch the current price of a cryptocurrency pair from the Binance API
-│   │   ├── task.controller.js    # An Express.js router handling a `/validate` POST endpoint
-│   │   ├── validator.service.js  # A validation module that checks if a task result from IPFS matches the ETH/USDT price within a 5% margin.
-│   │   ├── 📂 utils              # Defines two custom classes, CustomResponse and CustomError, for standardizing API responses.
-│   ├── Dockerfile                # A Dockerfile that sets up a Node.js (22.6) environment, exposes port 8080, and runs the application via index.js.
-|   ├── index.js                  # A Node.js server entry point that initializes the DAL service, loads the app configuration, and starts the server on the specified port.
-│   └── package.json              # Node.js dependencies and scripts
-│
-├── 📂 grafana                    # Grafana monitoring configuration
-├── docker-compose.yml            # Docker setup for Operator Nodes (Performer, Attesters, Aggregator), Execution Service, Validation Service, and monitoring tools
-├── .env.example                  # An example .env file containing configuration details and contract addresses
-├── README.md                     # Project documentation
-└── prometheus.yaml               # Prometheus configuration for logs
-```
+A clearinghouse is an agency that collects and distributes information. In the medical claims setting, this type of clearinghouse assists healthcare providers in processing patient insurance claims and billing, acting as a middleman between providers and insurance companies. They make sure:
 
-## Architecture
+- Claim forms are completely and accurately filled out, known as “claim scrubbing”
+    - This reduces the chances of denied claims.
+- Billing is processed accurately between the insurance company and the provider
 
-![Price oracle sample](https://github.com/user-attachments/assets/03d544eb-d9c3-44a7-9712-531220c94f7e)
+For clean electronic claims submitted through clearinghouses, processing can take at least two weeks (https://nybillpro.com/blog/how-long-does-a-medical-bill-take-to-process/)
 
-The Performer node executes tasks using the Task Execution Service and sends the results to the p2p network.
+### Medical Claims Fees
 
-Attester Nodes validate task execution through the Validation Service. Based on the Validation Service's response, attesters sign the tasks. In this AVS:
+Medical Claims Clearinghouses vary in the fee models in which they charge for claims processing, usually taking around $0.29 to $0.45 per claim or charging a monthly subscription or $70 to $129 (https://www.trillianthealth.com/hubfs/Clearinghouses.pdf)
 
-Task Execution logic:
-- Fetch the ETHUSDT price.
-- Store the result in IPFS.
-- Share the IPFS CID as proof.
+# VeriSure Product Design
 
-Validation Service logic:
-- Retrieve the price from IPFS using the CID.
-- Get the expected ETHUSDT price.
-- Validate by comparing the actual and expected prices within an acceptable margin.
----
+VeriSure aims to cut out the Medical Claims Clearinghouse middlemen and provide a faster, decentralized, and secure way to process medical claims.
 
-## Prerequisites
+## Who will use and benefit from our AVS?
 
-- Node.js (v 22.6.0 )
-- Foundry
-- [Yarn](https://yarnpkg.com/)
-- [Docker](https://docs.docker.com/engine/install/)
+| **User** | **Role in Veri*Sure*** | **Benefit** |
+| --- | --- | --- |
+| **🏥 Healthcare Providers** | **Submit insurance claims** | **Faster claim approvals & instant payouts** |
+| **🏦 Insurance Companies** | **View Submitted, Pending, and Paid claims** | **Reduce fraud, validate claims with ZK proofs** |
+| **🏛️ Regulators & Auditors** | **Review flagged claims** | **Verifiable fraud detection without exposing private data** |
+| **💻 EigenLayer AVS Validators** | **Process claims on-chain** | **Earn staking rewards for verifying claims** |
 
-## Installation
+# Why Othentic?
 
-1. Clone the repository:
+- VeriSure benefits from the Performer, Attester, and Aggregator Node architecture of Othentic.
+- Performer nodes can be static, randomly chosen, election-based or a staked mechanism
+    - In VeriSure, the Performer node will handle the sensitive information, ensuring HIPPA compliance by computing a zero-knowledge proof for the validity of the claim off-chain
 
-   ```bash
-   git clone https://github.com/Othentic-Labs/simple-price-oracle-avs-example.git
-   cd simple-price-oracle-avs-example
-   ```
+# Why zkVM?
 
-2. Install Othentic CLI:
-
-   ```bash
-   npm i -g @othentic/othentic-cli
-   ```
-
-## Usage
-
-Follow the steps in the official documentation's [Quickstart](https://docs.othentic.xyz/main/avs-framework/quick-start#steps) Guide for setup and deployment.
-
-### Next
-Modify the different configurations, tailor the task execution logic as per your use case, and run the AVS.
-
-Happy Building! 🚀
-
+- The idea is simple: **low cost and high scalability**
+- Generally, zero-knowledge proofs allow us to verify protected health information (PHI) across a community of decentralized nodes without needing to expose PHI to them.
+- With zk proofs, we can also enable the verifiability
