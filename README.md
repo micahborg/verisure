@@ -2,6 +2,8 @@
 
 ### **AI & ZK-Powered AVS for Insurance Claims Validation**
 
+![Architecture Diagram](../frontend/public/diagrams/ArchitectureDiagram.png)
+
 ## **Context & Problem Statement**
 
 **For many patients, insurance claim delays aren’t just frustrating—they’re life-threatening.** People facing urgent medical conditions, including terminal illnesses, are often left in limbo, unsure whether they can afford life-saving treatments while waiting for insurers to process claims. These long wait times create **immense emotional, physical, and financial stress**, forcing patients and families into impossible choices.
