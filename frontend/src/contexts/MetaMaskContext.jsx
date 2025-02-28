@@ -125,19 +125,45 @@ export const MetaMaskProvider = ({ children }) => {
 
         console.log("token", contract)
 
-        console.log('Checking if company has an account...')
-        const hasAccount = await contract.balanceOf(currentWalletAddress);
-        if (hasAccount.toString() === '0') {
-            console.log('Company does not have an account, creating one...')
-            await contract.createInsuranceAccount();
-        }
-
         console.log('Checking balance...')
-        const balance = await contract.getEscrowBalance();
-        console.log('Current Balance:', balance.toString());
+        let balance = await contract.getEscrowBalance();
+        balance = ethers.formatEther(balance);
+        console.log('Current Balance:', balance);
 
         return balance;
     };
+
+    const depositToEscrow = async (amount) => {
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const signer = await provider.getSigner();
+        const contractAddress = `0x3C014629faa8E5187d3942d58DC752DB8d7A98c9`; // Insurance contract address
+        const contract = new ethers.Contract(contractAddress, InsuranceEscrowABI.abi, signer);
+
+        // Convert ETH amount to Wei
+        const amountInWei = ethers.parseEther(amount.toString());
+        
+        // Call the depositToEscrow function with ETH value
+        const tx = await contract.depositToEscrow({
+            value: amountInWei
+        });
+        
+        // Wait for the transaction to be mined
+        const receipt = await tx.wait();
+        console.log("Deposit successful:", receipt);
+        
+        return receipt;
+    }
+
+    const withdrawFromEscrow = async (amount) => {
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const signer = await provider.getSigner();
+        const contractAddress = `0x3C014629faa8E5187d3942d58DC752DB8d7A98c9`; // Insurance contract address
+        const contract = new ethers.Contract(contractAddress, InsuranceEscrowABI.abi, signer);
+
+        console.log('Withdrawing from escrow...')
+        const tx = await contract.withdrawFromEscrow(amount);
+        console.log('Transaction Hash:', tx.hash);
+    }
 
     const checkIsOnChain = () => {
         return currentChainId === "0x13882";
@@ -149,6 +175,8 @@ export const MetaMaskProvider = ({ children }) => {
             isWalletConnected, 
             currentChainId, 
             currentWalletAddress, 
+            depositToEscrow,
+            withdrawFromEscrow,
             checkEscrowBalance,
             connectWallet,
             checkIsOnChain

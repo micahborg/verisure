@@ -37,7 +37,7 @@ export default function Home() {
     <Center>
       <VStack gap={4}>
         <Box m={20} textAlign={"center"}>
-          <Heading fontSize="5xl" mb={3}>VeriSure</Heading>
+          <Heading fontSize="5xl" mb={5}>VeriSure</Heading>
           <Text fontSize="xl">AI & ZK-Powered AVS for Insurance Claims Validation</Text>
         </Box>
 

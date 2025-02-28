@@ -75,6 +75,7 @@ export default function Home() {
     <Center>
       <VStack>
         <Heading fontSize="5xl" m={10}>VeriSure</Heading>
+        <Heading fontSize="2xl" mb={5}>Provider Portal</Heading>
         <Text>Please upload your claim (PDF)</Text>
         <Button onClick={triggerFileInput} colorScheme="teal" size="lg">
           Upload Claim
