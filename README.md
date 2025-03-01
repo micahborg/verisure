@@ -61,6 +61,13 @@ VeriSure aims to cut out the Medical Claims Clearinghouse middlemen and provide 
 - VeriSure benefits from the Performer, Attester, and Aggregator Node architecture of Othentic.
 - Performer nodes can be static, randomly chosen, election-based or a staked mechanism
     - In VeriSure, the Performer node will handle the sensitive information, ensuring HIPPA compliance by computing a zero-knowledge proof for the validity of the claim off-chain
+      
+# Why Gaia?
+VeriSure integrates Gaia Nodes to enhance claim validation using historical data and linking to-knowledge proofs (ZKPs). By leveraging Gaia’s AI-driven cms 1500 claim form analysis, VeriSure ensures that claims are pre-validated off-chain before ZK attestation to imporve accuracy and assist clearinghouses in determining reasons why the claim mighht be incomplete or inaccurate.
+
+- Gaia Nodes analyze past claim data to detect patterns that could lead to rejection using a small dataset of good and bad claims to base decisions off of.
+- Ensures claims are scrubbed for completeness before processing, reducing unnecessary denials.
+- In VeriSure, the Gaia Node acts as an intelligent pre-validator to minimize errors and enhance fraud detection without compromising patient privacy. 🚀
 
 # Why zkVM?
 
