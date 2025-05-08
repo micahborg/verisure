@@ -1,4 +1,4 @@
-# **VerifiSure**
+# **VeriSure**
 
 ### **AI & ZK-Powered AVS for Insurance Claims Validation**
 
